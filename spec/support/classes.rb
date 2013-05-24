@@ -42,7 +42,7 @@ ActiveRecord::Schema.define do
     t.string   :executable
     t.string   :arguments
     t.string   :schedule
-    t.integer  :start
+    t.integer  :started
     t.integer  :every
     t.string   :units
   end
