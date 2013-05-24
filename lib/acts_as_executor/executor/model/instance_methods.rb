@@ -26,7 +26,7 @@ module ActsAsExecutor
           tasks.all
         end
 
-        def execute instance, task_id, schedule = nil, start = nil, every = nil, units = nil
+        def execute instance, task_id, schedule = nil, started = nil, every = nil, units = nil
           begin
             humanized_schedule = schedule ? schedule.gsub("_", " ") : "one time"
             log.debug log_message name, "preparing", task_id, instance.class.name, "for execution (" + humanized_schedule + ")"
@@ -37,9 +37,9 @@ module ActsAsExecutor
                 when ActsAsExecutor::Task::Schedules::ONE_SHOT
                   future = executor.schedule instance, start, units
                 when ActsAsExecutor::Task::Schedules::FIXED_DELAY
-                  future = executor.schedule_with_fixed_delay instance, start, every, units
+                  future = executor.schedule_with_fixed_delay instance, started, every, units
                 when ActsAsExecutor::Task::Schedules::FIXED_RATE
-                  future = executor.schedule_at_fixed_rate instance, start, every, units
+                  future = executor.schedule_at_fixed_rate instance, started, every, units
               end
             else
               future = ActsAsExecutor::Common::FutureTask.new instance, nil
